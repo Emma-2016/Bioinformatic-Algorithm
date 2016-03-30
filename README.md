@@ -1,1 +1,1 @@
-#Bioinformatcis algorithm class on courseara
+#Bioinformatcis algorithm class on coursera
