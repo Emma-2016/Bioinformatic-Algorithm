@@ -11,7 +11,6 @@ def StringReconstruction(kmers):
     return outputString
 
 def EulerianPath(kmers):
-    import re
     graph = kmersPatterns(kmers)
     graphValues = []
     graphNodes = []
