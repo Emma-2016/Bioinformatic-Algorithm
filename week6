@@ -1,1 +1,17 @@
 #what methods do biologists use to analyze gene expression data?
+#Our goal is to partition the set of all yeast genes into k disjoint clusters so that genes in the same cluster have similar expression vectors. 
+#In practice, the number of clusters is not known a priori, and so biologists typically apply clustering algorithms to gene expression data for various values of k, selecting the value of k that makes sense biologically. 
+#For simplicity, we will assume that k is fixed.
+
+#Good Clustering Principle: Every pair of points from the same cluster should be closer to each other than any pair of points from different clusters. 
+#Rather than thinking about clustering as dividing data points into k clusters, we will instead try to slect a set Centers
+of k points that will serve as the centers of these clusters. We would like to choose Centers so that they minimize some distance function between Centers and Data over all possible choices of centers.
+#First, we define the Euclidean distance between points v=(v1, v2, ..., vm) and w=(w1, w2, ..., wm) in m-dimensional space, 
+denoted d(v, w) as the length of the line segment connecting these points.
+
+#Next, given a point DataPoint in multi-dimensional space and a set of k points Centers, we define the distance from DataPoint to Centers, denoted d(DataPoint, Centers), as the Euclidean distance from DataPoint to its closest center,
+d(DataPoint, Centers) = min(all points x from Centers)d(DataPoint, x)
+
+#We now define the distance between all data points Data and centers Centers. This distance, denoted MaxDistance(Data, Centers), is the maximum of d(DataPoint, Centers) among all data points DataPoint,
+MaxDistance(Data, Centers) = max(all points DataPoint from Data)d(DataPoints, Centers)
+
