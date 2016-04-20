@@ -60,6 +60,6 @@ for i in range(len(points)):
     for j in range(m):
         coordinates[j] = float(coordinates[j])
     points[i] = coordinates
-
+    
 D = SquaredErrorDistortion(k, m, centers, points)
 print '%.3f' % D
