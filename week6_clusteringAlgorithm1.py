@@ -18,14 +18,15 @@ def FarthestFirstTraversal(k, m, points):
     for j in range(m):  #mutable variable can not use as key, so convert it into string;
         joinList.append(str(points[0][j]))  #float type can not join directly, so first convert it into str
     clusterK = ' '.join(joinList)
-    cluster[clusterK] = points[1:]
+    points.remove(points[0])
+    cluster[clusterK] = points
 
     while len(centers) < k:
-        centerNew = clusterCenter(k, m, cluster, centers)
+        centerNew = clusterCenter(k, m, cluster, centers, points)
         centers.append(centerNew)
     return centers
 
-def clusterCenter(k, m, cluster, centers):
+def clusterCenter(k, m, cluster, centers, points):
     centerNew = []
     maxDis = 0
     centerNewStr = ''
@@ -59,28 +60,45 @@ def clusterCenter(k, m, cluster, centers):
     newCenterPoint = newCenter.split()
     for i in range(len(newCenterPoint)):    #convert the new center back to float type
         newCenterPoint[i] = float(newCenterPoint[i])
+    points.remove(newCenterPoint)
 
     if (len(centers) + 1) < k:  #decide if it is necessary to assign points to the new centers
-        clusterNow = cluster[originalCenter]
-        for  p in clusterNow:
-            sum = 0
-            dis = 0
-            n = 0
+        centersInSubFunction = []
+        for i in range(len(centers)):
+            centersInSubFunction.append(centers[i])
+        centersInSubFunction.append(newCenterPoint)
+
+        for c in centersInSubFunction:
             joinList = []
+            n = 0
             while n < m:
-                joinList.append(str(p[n]))
-                sum += (newCenterPoint[n] - p[n]) ** 2
+                joinList.append(str(c[n]))
                 n += 1
-            dis = sum ** 0.5
-            pKey = ' '.join(joinList)
-            pKey = originalCenter + ':' + pKey
-            if pDic[pKey] > dis:
-                newCluster.append(p)
-                cluster[originalCenter].remove(p)
-        cluster[newCenter] = newCluster
+            cKey = ' '.join(joinList)
+            cluster[cKey] = []
+
+        for p in points:
+            minDis = float('inf')
+            belongTo = ''
+             for c in centersInSubFunction:
+                sum = 0
+                dis = 0
+                n = 0
+                joinList = []
+                while n < m:
+                    joinList.append(str(c[n]))
+                    sum += (c[n] - p[n]) ** 2
+                    n += 1
+                dis = sum ** 0.5
+                cKey = ' '.join(joinList)
+                if dis < minDis:
+                    minDis = dis
+                    belongTo = cKey
+            cluster[belongTo].append(p)
+
     return newCenterPoint
 
-input ='''3 2
+input = '''3 2
 0.0 0.0
 5.0 5.0
 0.0 5.0
@@ -88,6 +106,7 @@ input ='''3 2
 2.0 2.0
 3.0 3.0
 1.0 2.0'''
+
 lines = input.splitlines()
 k, m = lines[0].split()
 points = []
@@ -102,3 +121,4 @@ for i in centers:
     for j in range(len(i)):
         print i[j],
     print
+ 
